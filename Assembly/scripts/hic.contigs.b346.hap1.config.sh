@@ -60,19 +60,19 @@ MARVEL_STATS=1
 SLURM_STATS=0
 
 ## general information
-PROJECT_ID=vpTaxBaccB23-6-hap1
+PROJECT_ID=vpTaxBaccB34-6-hap1
 GSIZE=10000M
 SLURM_PARTITION=main # default slurm partition - todo define individual partion for tasks
 SLURM_NUMACTL=0
  
 ################# define marvel phases and their steps that should be done 
 
-HIC_PATH=/projects/dazzler/pippel/vpTaxBacc/b23-6/hic
+HIC_PATH=/projects/dazzler/pippel/vpTaxBacc/b34-6/hic
 DB_PATH=${HIC_PATH} ## fake, its not used in HIC pipeline
 
 ASSMEBLY_DIR="hic_rapidCuration"
 PATCHING_DIR="hic_patch"
-CONT_DB="vpTaxBacc_B23-6-hap1"
+CONT_DB="vpTaxBacc_B34-6-hap1"
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> marvel phase 15 - HiC QC and scaffolding  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 SC_HIC_TYPE=5
@@ -91,7 +91,7 @@ SC_HIC_SUBMIT_SCRIPTS_TO=8
 SC_HIC_RUNID=hap1											# used for output directory purgeHaplotigs_run${PB_ARROW_RUNID}
 SC_HIC_READS="${HIC_PATH}"   								# directory with pacbio fasta files
 SC_HIC_OUTDIR="./"
-SC_HIC_REF=/projects/dazzler/pippel/vpTaxBacc/b23-6/contigs/vpTaxBacc_B23-6.hifiasm.asm.hic.p_ctg_l1.fasta
+SC_HIC_REF=/projects/dazzler/pippel/vpTaxBacc/b34-6/contigs/vpTaxBacc_B34-6.hifiasm.asm.hic.hap1_l1.purged.fasta
 #SC_HIC_REF_EXCLUDELIST="stats/contigs/m1/haploSplit/filter/mMyoMyo_m1_h.p.excludeP65RepeatContigs.clist"
 SC_HIC_ENZYME_NAME="ArimaV2"
 SC_HIC_ENZYME_SEQ="GATC,GANTC,CTNAG,TTAA"
