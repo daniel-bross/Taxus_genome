@@ -32,11 +32,11 @@ process_annotation <- function(input, targets) {
   
   # Plot regular scale
   pdf(paste0("results/upset/",input,"upset_1.pdf"), width = 6, height = 3, compress = FALSE)
-  print(upset(binary_matrix, sets = c("B236-h1", "B236-h2", "B346-h1", "B346-h2"), order.by = "freq"))
+  print(upset(binary_matrix, sets = c("B236-h1", "B236-h2", "B346-h1", "B346-h2"), order.by = "freq", mainbar.y.label = "Gene set size"))
   dev.off()
 
   pdf(paste0("results/upset/",input,"upset_2.pdf"), width = 6, height = 3, compress = FALSE)
-  print(upset(binary_matrix, sets = c("B236-h1", "B236-h2", "B346-h1", "B346-h2"), order.by = "freq", mainbar.y.max = 1000))
+  print(upset(binary_matrix, sets = c("B236-h1", "B236-h2", "B346-h1", "B346-h2"), order.by = "freq", mainbar.y.label = "Gene set size", mainbar.y.max = 1000))
   dev.off()
 
 }

@@ -1,18 +1,13 @@
 #!/usr/bin/env Rscript
 
-packages = c("tidyverse","viridis")
-package.check <- lapply(
-  packages, FUN = function(x) {
-      library(x, character.only = TRUE)
-  }
-)
+library("tidyverse")
 
 # adapted from https://danielroelfs.com/posts/how-i-create-manhattan-plots-using-ggplot/
 
+colors = c("#0A0A0A","#B6BD2FA5")
 # read gwas input
-for (i in c("fh1","fh2","mh1","mh2")) {
-
-	gwas <- read_table(paste0("source_data/",i,"_gwas.txt"), col_type="cin") %>%
+for (i in c("fh2","mh1","mh2")) {
+gwas <- read_table(paste0("source_data/",i,"_gwas.txt"), col_type="cin") %>%
         mutate(chr = case_when(
                                grepl("unloc", chr) ~ str_extract(chr, "[[:digit:]]+(\\n|_)") %>% str_extract(., "[[:digit:]]+"), # handle unlocalized contigs
                                grepl("tg", chr) ~ "NA", # handle unassembled contigs in female haplotypes
@@ -20,9 +15,9 @@ for (i in c("fh1","fh2","mh1","mh2")) {
                                .default = chr %>% str_extract(., "\\d+(?![^\\r\\n\\d]*\\d)")) # handle pseudochromosomes
         ) %>%
         mutate(chr = factor(chr,level=c("1","2","3","4","5","6","7","8","9","10","11","12","NA")) ) %>% # convert chr names  
-        rename(bp=ps, p=p_lrt)
+	rename(bp=ps, p=p_lrt)
 
-sig <- 0.05 / nrow(gwas)
+sig <- 0.05 / nrow(gwas) # calculate bonferroni threshold
 sig_data <- gwas |> subset(p < 0.05)
 notsig_data <- gwas |> subset(p >= 0.05) |> group_by(chr) |> sample_frac(0.1)
 gwas <- bind_rows(sig_data, notsig_data) %>% arrange(chr,bp)
@@ -32,25 +27,13 @@ gwas <- gwas |> inner_join(data_cum, by = "chr") |> mutate(bp_cum = bp + bp_add)
 
 axis_set <- gwas |> group_by(chr) |> summarize(center = mean(bp_cum))
 
-manh1 <- ggplot(gwas, aes( x = bp_cum, y = -log10(p), color = as_factor(chr))) +
+plot <- ggplot(gwas, aes( x = bp_cum, y = -log10(p), color = as_factor(chr))) +
   geom_hline(yintercept = -log10(sig), color = "grey40", linetype = "dashed" ) +
-  geom_point(size= 2, alpha = 0) +
+  geom_point(size = 2, alpha = 0.75) +
   scale_x_continuous(label = axis_set$chr, breaks = axis_set$center) +
-  scale_color_manual(values = c(rep(magma(4, begin=0.1,end=0.75), length.out=length(levels(gwas$chr))))) +
+  scale_color_manual(values = rep_len(colors, nrow(axis_set))) +
   guides(color="none") +
-  theme_classic(base_size = 6) +
+  theme_classic(base_size = 7) +
   labs(x = "Chromosome", y = expression('-log'[10]*'P'))
-ggsave(paste0("results/",i,"_manhattan.pdf"), manh1 , device="pdf", width=180,height=50,units="mm", compress = FALSE)
-
-manh2 <- ggplot(gwas, aes( x = bp_cum, y = -log10(p), color = as_factor(chr))) +
-  geom_hline(yintercept = -log10(sig), color = "grey40", linetype = "dashed" ) +
-  geom_point(size= 2) +
-  scale_x_continuous(label = axis_set$chr, breaks = axis_set$center) +
-  scale_color_manual(values = c(rep(magma(4, begin=0.1,end=0.75), length.out=length(levels(gwas$chr))))) +
-  guides(color="none") +
-  theme_classic(base_size = 6) +
-  labs(x = "Chromosome", y = expression('-log'[10]*'P'))
-saveRDS(manh2, file = paste0("results/",i,"_manhattan.rds"))
-ggsave(paste0("results/",i,"_manhattan.png"), manh2 , device="png", width=180,height=50,units="mm")
+saveRDS(plot, file = paste0("results/manhattan_",i,".rds"))
 }
-

@@ -1,25 +1,51 @@
 #!/usr/bin/env Rscript
 
 library("tidyverse")
-library("ggh4x")
-library("ggpubr")
 
-df <- rbind(read_csv("data/W_kmer_consistency_full.csv", col_types = "-n--") %>% mutate(sex = "female", set = "random sets"), read_csv("data/Y_kmer_consistency_full.csv", col_types = "-n--") %>% mutate(sex = "male", set = "random sets"), read_csv("data/Mapping_Pops_W_kmer_consistency_full.csv", col_types = "-n--") %>% mutate(sex = "female", set = "population sets"), read_csv("data/Mapping_Pops_Y_kmer_consistency_full.csv", col_types = "-n--") %>% mutate(sex = "male", set = "population sets"))
+# load data
+df <- rbind(read_csv("data/W_kmer_consistency_full.csv", col_types = "-n--") %>%
+	count(obs_freq) %>%
+	add_row(obs_freq = (nrow(.)+1):12, n = 0) %>%
+	mutate(sex = "Female", set = "Random"),
+  read_csv("data/Y_kmer_consistency_full.csv", col_types = "-n--") %>%
+        count(obs_freq) %>%
+        add_row(obs_freq = (nrow(.)+1):12, n = 0) %>%
+        mutate(sex = "Male", set = "Random"),
+  read_csv("data/Mapping_Pops_W_kmer_consistency_full.csv", col_types = "-n--") %>%
+        count(obs_freq) %>%
+        add_row(obs_freq = (nrow(.)+1):6, n = 0) %>%
+        mutate(sex = "Female", set = "Population"),
+  read_csv("data/Mapping_Pops_Y_kmer_consistency_full.csv", col_types = "-n--") %>%
+        count(obs_freq) %>%
+        add_row(obs_freq = (nrow(.)+1):6, n = 0) %>%
+        mutate(sex = "Male", set = "Population")) %>%
+	mutate(set = factor(set, levels = c("Random", "Population")))
 
-counts <- df %>% count(sex, set, obs_freq) %>% mutate(set = factor(set, levels = c("random sets","population sets")))
+colors <- c("#E85845","#6A9AD9")
 
-plot <- ggplot(counts, aes(obs_freq, n, fill = sex)) +
-  geom_bar(position="dodge", stat = "identity") +
-  scale_y_continuous(trans = 'log10') +
-  scale_fill_manual(values = c("#3B62FF", "#F09B39")) +
-  theme_classic(base_size = 6) +
-  labs(x = "observation count across replicates", y = "count") +
-  theme(legend.position = "inside", legend.position.inside = c(.99, .5), legend.justification = c("right","center"), legend.box.just = "right", legend.margin = margin(6, 6, 6, 6),legend.background = element_rect(fill = "grey95"), legend.key.size = unit(5, "mm"))
+# plot
+plot <- ggplot(df %>% filter(set == "Random"), aes(x = n, y = factor(obs_freq), color = sex)) +
+  geom_segment(aes(x = 0, xend = n, y = factor(obs_freq)), position = position_dodge(width = 0.6), linewidth = 0.6, color = "grey70") +
+  geom_point(data = df %>% filter(set == "Random") %>% group_by(obs_freq) %>% filter(sum(n) > 0), aes(size = ifelse(n == 0, NA , 2)), position = position_dodge(width = 0.6)) +
+  scale_color_manual(values = colors) +
+  scale_size_continuous(range = c(1.5,1.5), limits = c(1.5,1.5)) +
+  scale_y_discrete() +
+  scale_x_log10() +  
+  labs(x = "Sex-specific k-mers", y = "Consistency", color = "Sex" ) +
+  theme_classic(base_size = 7) +
+  guides(size = "none", color = "none") +
+  theme(strip.text = element_blank())
+saveRDS(plot, file = "results/kmer_consistency_random.rds")
 
-f <- facet(plot, facet.by = "set", scales = "free_x") +
-	facetted_pos_scales(x = list(scale_x_continuous(breaks = c(1:12), lim = c(0.8,12)), scale_x_continuous(breaks = c(1:6), lim = c(0.8,6)))) +
-	force_panelsizes(cols = c(2,1), respect = TRUE) +
-	theme(panel.spacing = unit(2, "mm"))
-saveRDS(f, file = "results/kmer_consistency.pdf")
-ggsave("results/kmer_consistency.pdf", f, device = "pdf", width = 130, height = 50, units = "mm")
-
+plot <- ggplot(df %>% filter(set == "Population"), aes(x = n, y = factor(obs_freq), color = sex)) +
+  geom_segment(aes(x = 0, xend = n, y = factor(obs_freq)), position = position_dodge(width = 0.6), linewidth = 0.6, color = "grey70") +
+  geom_point(data = df %>% filter(set == "Population") %>% group_by(obs_freq) %>% filter(sum(n) > 0), aes(size = ifelse(n == 0, NA , 2)), position = position_dodge(width = 0.6)) +
+  scale_color_manual(values = colors) +
+  scale_size_continuous(range = c(1.5,1.5), limits = c(1.5,1.5)) +
+  scale_y_discrete() +
+  scale_x_log10() +
+  labs(x = "Sex-specific k-mers", y = "Consistency", color = "Sex" ) +
+  theme_classic(base_size = 7) +
+  guides(size = "none", color = "none") +
+  theme(strip.text = element_blank())
+saveRDS(plot, file = "results/kmer_consistency_population.rds")
