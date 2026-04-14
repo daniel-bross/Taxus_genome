@@ -1,9 +1,5 @@
 #! /bin/awk -f
 
-########################################
-# get basic statistics from gtf files #
-#######################################
-
 # NOTE: braker disregards UTRs, and so does this script
 
 # set up variables
@@ -29,7 +25,7 @@ BEGIN {
 		local_intron_count = 0
 		break
 	case "mRNA":
-		#
+		# not used
 		break
 	case "start_codon":
 		local_exon_count = 0
@@ -40,7 +36,7 @@ BEGIN {
 		local_intron_count = 0
 		break
 	case "exon":
-		#
+		# not used
 		break
 	case "CDS":
 		idx=(id "::" ++local_cds_count)
