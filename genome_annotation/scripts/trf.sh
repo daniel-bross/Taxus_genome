@@ -1,6 +1,8 @@
 #!/bin/bash -eu
 set -o pipefail
 
+# this method was taken from https://github.com/BGAcademy23/B3/blob/main/tutorial.md
+
 # set directories, e.g. BASEDIR=$(grep '^BASEDIR=' config.cfg | cut -d= -f2)
 BASEDIR=$(grep '^BASEDIR=' config.cfg | cut -d= -f2)
 THREADS=$(grep '^THREADS=' config.cfg | cut -d= -f2)
@@ -20,6 +22,7 @@ source $CONDAPATH
 conda activate $CENVNAME
 
 mkdir -p $TRFDIR
+# The script splitMfasta.pl is from https://github.com/Gaius-Augustus/Augustus/blob/master/scripts/splitMfasta.pl
 scripts/splitMfasta.pl --minsize=25000000 --outputpath=$TRFDIR $INPUT
 
 cd ${TRFDIR}

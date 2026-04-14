@@ -41,6 +41,11 @@ Combine the (unzipped) files with `cat` into one "database".
 2. run `scripts/rmo_model.sh` to generate a repeat library
 3. run `scripts/rma_mask.sh` to mask repeats in the genome assembly
 4. run `scripts/trf.sh` to further mask repeats with Tandem Repeat Finder
+note:
+several scripts used in this step were copied from public repos:
+- the TRF usage is described in https://github.com/BGAcademy23/B3/blob/main/tutorial.md
+- the script `splitMfasta.pl` was taken from https://github.com/Gaius-Augustus/Augustus/blob/master/scripts/splitMfasta.pl
+- the script `parseTrfOutput.py` was taken from https://github.com/gatech-genemark/BRAKER2-exp
 
 ## 3. BRAKER
 ### 3.1. prepare braker input
@@ -49,6 +54,7 @@ Combine the (unzipped) files with `cat` into one "database".
 3. run `ls results/minimap2/*.bam | tr '\n' ',' | sed 's/.$//' > data/rna_isoseq_bam_list.txt`
 
 ### 3.2. BRAKER
+note: in the following scripts, the "cleanup routines" are deactivated. If you want to save disk space, remove the `--nocleanup \` lines
 1. run `scripts/braker-sr.sh` 
 2. run `scripts/braker-lr.sh`
 3. run `scripts/tsebra.sh` to combine the output GTFs of the two runs, yielding the final gene set.
