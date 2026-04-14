@@ -9,7 +9,7 @@ module load samtools/1.21
 BASEDIR=$(grep '^BASEDIR=' config.cfg | cut -d= -f2)
 INPUTDIR=${BASEDIR}results/04_mapping/
 OUTPUTDIR=${BASEDIR}results/06_merge_bam/
-METAFILE=${BASEDIR}data/metadata/ReSeq_Meta_for_RG.txt
+METAFILE=$(grep '^METAFILE=' config.cfg | cut -d= -f2)
 ID=$1
 
 FILE=$(awk 'NR>1{print $1}' $METAFILE | cut -d '_' -f1 | uniq | head -n $ID | tail -1)

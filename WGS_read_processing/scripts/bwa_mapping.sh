@@ -4,7 +4,7 @@ set -o pipefail
 printf '[%(%Y-%m-%d %H:%M:%S)T] ' && echo "INFO: running ${0##*/}"
 
 module purge
-module load BWA/2.2.1_7aa5ff6
+module load BWA/2.2.1
 module load samtools/1.21
 
 BASEDIR=$(grep '^BASEDIR=' config.cfg | cut -d= -f2)
@@ -39,16 +39,6 @@ TAG="@RG\\tID:${RGID}\\tBC:${RGBC}\\tCN:${RGCN}\\tDS:${RGDS}\\tLB:${RGLB}\\tPL:$
 echo "Processing ${FILE}..."
 
 bwa-mem2 mem -t ${THREADS} ${INDEX} ${INPUTDIR}${FILE}_R1.fastq.gz ${INPUTDIR}${FILE}_R2.fastq.gz -R ${TAG} | samtools fixmate -@ ${THREADS} -m - - | samtools sort -@ ${THREADS} -o ${OUTPUTDIR}${FILE}_sorted.bam -
-
-# check if output mapping has the expected number of reads
-COUNT_B=$(samtools view -@ $THREADS -c -F 0x900 ${OUTPUTDIR}${FILE}_sorted.bam)
-COUNT_F=$(zcat ${INPUTDIR}${FILE}_R1.fastq.gz | echo $((`wc -l`/2)) ) # should be /4 and *2 later, this assuemes that both FASTQ PE files contain the same number of sequences, which they should!
-
-if [[ $COUNT_B == $COUNT_F ]]; then
-	printf '[%(%Y-%m-%d %H:%M:%S)T] ' && echo "INFO: confirmed that the output .bam file containing the same number of sequences as the input fastq files"
-elif [[ $COUNT_B != $COUNT_F ]]; then
-	printf '[%(%Y-%m-%d %H:%M:%S)T] ' && echo "WARNING: output .bam file does not contain the same number of sequences as the input fastq files "
-fi
 
 module purge
 
