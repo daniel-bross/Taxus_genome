@@ -12,7 +12,7 @@ cd $BASEDIR
 
 singularity exec --bind ${BASEDIR}:${BASEDIR} $C_ENTAP EnTAP \
 	--run \
-	--run-ini ${BASEDIR}entap_run.params \
+	--run-ini ${BASEDIR}data/entap_run.params \
 	--entap-ini ${BASEDIR}data/entap_config.ini \
 	--eggnog-map-data ${BASEDIR}results/entap_config/databases\
 	--eggnog-map-dmnd ${BASEDIR}results/entap_config/bin/eggnog_proteins.dmnd

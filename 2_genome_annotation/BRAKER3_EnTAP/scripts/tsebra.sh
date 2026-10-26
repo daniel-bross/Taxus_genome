@@ -7,7 +7,7 @@ printf '[%(%Y-%m-%d %H:%M:%S)T] ' && echo "INFO: running ${0##*/}"
 BASEDIR=$(grep '^BASEDIR=' config.cfg | cut -d= -f2)
 THREADS=$(grep '^THREADS=' config.cfg | cut -d= -f2)
 NAME=$(grep '^NAME=' config.cfg | cut -d= -f2)
-CONTAINER=/home/bross/singularity_cache/braker3_v3.0.7.6.sif
+CONTAINER=$(grep '^C_BRAKERsr=' config.cfg | cut -d= -f2)
 
 mkdir -p ${BASEDIR}results/tsebra
 

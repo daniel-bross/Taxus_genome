@@ -85,11 +85,11 @@ END {
 	printf "1	total gene count			%G\n",		total_count["genes"]
 	printf "2	min/mean/max gene length		%G/%G/%G\n",	ar_min ["genes"], ar_mean["genes"], ar_max["genes"]
 	printf "3	q1/median/q3 gene length		%G/%G/%G\n",	ar_q1["genes"], ar_median["genes"], ar_q3["genes"]
-        printf "--- transcripts ---\n"
+    printf "--- transcripts ---\n"
 	printf "4	total transcript count			%G\n",		total_count["transcriptsl"]
-        printf "5	cumulative transcripts area		%G\n",		cumul["transcriptsa"]
+    printf "5	cumulative transcripts area		%G\n",		cumul["transcriptsa"]
 	printf "6	min/mean/max transcript area		%G/%G/%G\n",	ar_min["transcriptsa"], ar_mean["transcriptsa"], ar_max["transcriptsa"]
-        printf "7	q25/median/q75 transcript area		%G/%G/%G\n",	ar_q1["transcriptsa"], ar_median["transcriptsa"], ar_q3["transcriptsa"]
+    printf "7	q25/median/q75 transcript area		%G/%G/%G\n",	ar_q1["transcriptsa"], ar_median["transcriptsa"], ar_q3["transcriptsa"]
 	printf "8	cumulative transcript length		%G\n",		cumul["transcriptsl"]
 	printf "9	min/mean/max transcript length		%G/%G/%G\n",    ar_min["transcriptsl"], ar_mean["transcriptsl"], ar_max["transcriptsl"]
 	printf "10	q25/median/q75 transcript length	%G/%G/%G\n",	ar_q1["transcriptsl"], ar_median["transcriptsl"], ar_q3["transcriptsl"]
@@ -98,15 +98,15 @@ END {
 	printf "12	min/mean/max cds per transcript		%G/%G/%G\n",	ar_min["pt_cdsc"], ar_mean["pt_cdsc"], ar_max["pt_cdsc"]
 	printf "13	q25/median/q75 cds per transcript	%G/%G/%G\n",	ar_q1["pt_cdsc"], ar_median["pt_cdsc"], ar_q3["pt_cdsc"]
 	printf "14	cumulative cds length			%G\n", 		cumul["cdsl"]
-        printf "15	min/mean/max cds length		%G/%G/%G\n",	ar_min["cdsl"], ar_mean["cdsl"], ar_max["cdsl"]
-        printf "16	q25/median/q75 cds length		%G/%G/%G\n",	ar_q1["cdsl"], ar_median["cdsl"], ar_q3["cdsl"]
-        printf "--- introns ---\n"
+    printf "15	min/mean/max cds length		%G/%G/%G\n",	ar_min["cdsl"], ar_mean["cdsl"], ar_max["cdsl"]
+    printf "16	q25/median/q75 cds length		%G/%G/%G\n",	ar_q1["cdsl"], ar_median["cdsl"], ar_q3["cdsl"]
+    printf "--- introns ---\n"
 	printf "17	total intron count			%G\n",		total_count["intronsl"]
 	printf "18	min/mean/max introns per transcript	%G/%G/%G\n",	ar_min["pt_intronsc"], ar_mean["pt_intronsc"], ar_max["pt_intronsc"]
-	printf "19	mean/median/max introns per transcript	%G/%G/%G\n",	ar_q1["pt_intronsc"], ar_median["pt_intronsc"], ar_q3["pt_intronsc"]
-        printf "20	cumulative intron length		%G\n",		cumul["intronsl"]
+	printf "19	q25/median/q75 introns per transcript	%G/%G/%G\n",	ar_q1["pt_intronsc"], ar_median["pt_intronsc"], ar_q3["pt_intronsc"]
+    printf "20	cumulative intron length		%G\n",		cumul["intronsl"]
 	printf "21	min/mean/max intron length		%G/%G/%G\n",	ar_min["intronsl"], ar_mean["intronsl"], ar_max["intronsl"]
-        printf "22	q25/median/q75 intron length		%G/%G/%G\n",	ar_q1["intronsl"], ar_median["intronsl"], ar_q3["intronsl"]
+    printf "22	q25/median/q75 intron length		%G/%G/%G\n",	ar_q1["intronsl"], ar_median["intronsl"], ar_q3["intronsl"]
 	printf "--- other ---\n"
 	printf "23	monoexonic transcript count		%G\n",		monoex_count
 	printf "24	multiexonic transcript count		%G\n",		multiex_count

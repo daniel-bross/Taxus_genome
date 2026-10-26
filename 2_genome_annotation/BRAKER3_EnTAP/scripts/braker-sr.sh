@@ -12,7 +12,6 @@ INPUT=${BASEDIR}results/${NAME}.fa.combined.masked
 BRAKERDIR=${BASEDIR}results/braker-sr/
 RNADIR=${BASEDIR}data/rnaseq-sr/
 RNANAMES=$(cat ${BASEDIR}data/rna_id_list.txt)
-#BAMFILES=$(cat ${BASEDIR}data/rna_bam_list.txt) # these have been generated in a previous braker run
 PROTDB=${BASEDIR}data/protdb_Viridiplantae_uniprotpe3_clean.fa
 
 printf '[%(%Y-%m-%d %H:%M:%S)T] ' && echo "INFO: starting braker.sh..."
