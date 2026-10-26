@@ -1,9 +1,9 @@
-# 1) Create PacBio BAM index
+### 1. Create PacBio BAM index
 ```bash
 pbindex "$INPUT_BAM"
 ```
 
-# 2) Generate CCS for one chunk
+### 2. Generate CCS for one chunk
 ```bash
 ccs "$INPUT_BAM" \
     "$DCS_DIR/$BAM_BASENAME.$SHARD_ID-of-$TOTAL_CHUNKS.ccs.bam" \
@@ -12,7 +12,7 @@ ccs "$INPUT_BAM" \
     -j $THREADS_PER_CHUNK
 ```
 
-# 3) Align subreads to CCS (ACTC) (for each chunk)
+### 3. Align subreads to CCS (ACTC) (for each chunk)
 ```bash
 actc -j $THREADS_PER_CHUNK \
     "$INPUT_BAM" \
@@ -20,7 +20,7 @@ actc -j $THREADS_PER_CHUNK \
     "$DCS_DIR/$BAM_BASENAME.$SHARD_ID-of-$TOTAL_CHUNKS.subreads_to_ccs.bam"
 ```
 
-# 4) Run DeepConsensus (for each chunk)
+### 4. Run DeepConsensus (for each chunk)
 ```bash
 deepconsensus run \
     --subreads_to_ccs="$DCS_DIR/$BAM_BASENAME.$SHARD_ID-of-$TOTAL_CHUNKS.subreads_to_ccs.bam" \
@@ -30,7 +30,7 @@ deepconsensus run \
 ```
 
 
-# 5) Merge chunk FASTQs
+### 5. Merge chunk FASTQs
 ```bash
 cat "$DCS_DIR/$BAM_BASENAME".*.output.fastq > \
     "$DCS_DIR/$BAM_BASENAME.dcs.fastq"
