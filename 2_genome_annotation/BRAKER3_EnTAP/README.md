@@ -26,6 +26,10 @@ The scripts assume the presence of a `data/` subdirectory containing the followi
 - a FASTA file containing protein evidence to be used in the annotation
 - two EnTAP configuration files `entap_config.ini` and `entap_run.params` (included in the repository)
 
+Additionally, the pipeline uses the following external scripts that should be placed into the `scripts` directory:
+- `splitMfasta.pl` from https://github.com/Gaius-Augustus/Augustus/blob/master/scripts/splitMfasta.pl
+- `parseTrfOutput.py` from https://github.com/gatech-genemark/BRAKER2-exp/blob/master/bin/trf-scripts/parseTrfOutput.py
+
 To generate the protein evidence file:
 1. download protein evidence FASTA files:
 - [Orthodb Viridiplantae v12](https://bioinf.uni-greifswald.de/bioinf/partitioned_odb12/)
@@ -41,11 +45,7 @@ Combine the (unzipped) files with `cat` into one "database".
 2. run `scripts/rmo_model.sh` to generate a repeat library
 3. run `scripts/rma_mask.sh` to mask repeats in the genome assembly
 4. run `scripts/trf.sh` to further mask repeats with Tandem Repeat Finder
-note:
-several scripts used in this step were copied from public repos:
 - the TRF usage is described in https://github.com/BGAcademy23/B3/blob/main/tutorial.md
-- the script `splitMfasta.pl` was taken from https://github.com/Gaius-Augustus/Augustus/blob/master/scripts/splitMfasta.pl
-- the script `parseTrfOutput.py` was taken from https://github.com/gatech-genemark/BRAKER2-exp
 
 ## 3. BRAKER
 ### 3.1. prepare braker input
