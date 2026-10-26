@@ -1,17 +1,20 @@
 #!/usr/bin/env Rscript
 
 library("tidyverse")
+library("viridis")
 
 # adapted from https://danielroelfs.com/posts/how-i-create-manhattan-plots-using-ggplot/
 
-colors = c("#0A0A0A","#B6BD2FA5")
+colors <- cividis(2, alpha = 1, begin = 0.25, end = 0.75)
+# #414D6BFF" and "#BCAF6FFF")
+
 # read gwas input
 gwas <- read_table(paste0("source_data/fh1_gwas.txt"), col_type="cin") %>%
         mutate(chr = case_when(
-                               grepl("unloc", chr) ~ str_extract(chr, "[[:digit:]]+(\\n|_)") %>% str_extract(., "[[:digit:]]+"), # handle unlocalized contigs
-                               grepl("tg", chr) ~ "NA", # handle unassembled contigs in female haplotypes
-                               grepl("scaff", chr) ~ "NA", # handle unassembled contigs in male haplotypes
-                               .default = chr %>% str_extract(., "\\d+(?![^\\r\\n\\d]*\\d)")) # handle pseudochromosomes
+          grepl("unloc", chr) ~ str_extract(chr, "[[:digit:]]+(\\n|_)") %>% str_extract(., "[[:digit:]]+"), # handle unlocalized contigs
+          grepl("tg", chr) ~ "NA", # handle unassembled contigs in female haplotypes
+          grepl("scaff", chr) ~ "NA", # handle unassembled contigs in male haplotypes
+          .default = chr %>% str_extract(., "\\d+(?![^\\r\\n\\d]*\\d)")) # handle pseudochromosomes
         ) %>%
         mutate(chr = factor(chr,level=c("1","2","3","4","5","6","7","8","9","10","11","12","NA")) ) %>% # convert chr names  
 	rename(bp=ps, p=p_lrt)
