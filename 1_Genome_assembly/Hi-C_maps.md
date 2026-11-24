@@ -36,7 +36,7 @@ library(ggplot2)
 
 for (i in c("B236","B346")) {
     hic <- import(paste0(i,".mcool"), resolution=2000000)
-    plot <- plotMatrix(hic, dpi = 600, chrom_lines = FALSE, show_grid = TRUE)
+    plot <- plotMatrix(hic, dpi = 600, chrom_lines = FALSE, show_grid = FALSE)
     ggsave(paste0(i,"_hic_contacts_2000000.png"), plot)
 }
 
